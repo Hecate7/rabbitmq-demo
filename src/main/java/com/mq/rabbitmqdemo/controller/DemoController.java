@@ -1,6 +1,7 @@
 package com.mq.rabbitmqdemo.controller;
 
 import com.mq.rabbitmqdemo.helloWorld.Send;
+import com.mq.rabbitmqdemo.publishSubscriber.EmitLog;
 import com.mq.rabbitmqdemo.workQueues.NewTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,8 @@ public class DemoController {
     private Send send;
     @Autowired
     private NewTask newTask;
+    @Autowired
+    private EmitLog emitLog;
 
     @RequestMapping("/send")
     public void Send(@RequestParam("message")String message){
@@ -23,5 +26,10 @@ public class DemoController {
     @RequestMapping("/newTask")
     public void newTask(@RequestParam("message")String message){
         newTask.NewTask(message);
+    }
+
+    @RequestMapping("/emitLog")
+    public void emitLog(@RequestParam("message")String message){
+        emitLog.emitLog(message);
     }
 }
