@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
 public class Worker {
     protected static Logger logger = LoggerFactory.getLogger(Send.class);
 
-    public static String QUEUE_NAME = "DEMO_QUEUE";
+    public static String QUEUE_NAME = "DURABLE_QUEUE";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory connectionFactory = new ConnectionFactory();
@@ -25,6 +25,9 @@ public class Worker {
         channel.queueDeclare(QUEUE_NAME,true,false,false,null);
         logger.info("[*] Waiting for message");
 
+        /**
+         * unacknowledged messages
+         */
         channel.basicQos(1);
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
@@ -35,10 +38,17 @@ public class Worker {
                 doTask(message);
             } finally {
                 logger.info("[*] Done!");
+                /**
+                 * var1:该消息的index
+                 * var3：是否批量一次性ack所有小于deliveryTag的消息
+                 */
                 channel.basicAck(delivery.getEnvelope().getDeliveryTag(),false);
             }
         };
 
+        /**
+         * basicConsume(queueName,autoAck,DeliverCallback,CancelCallback)
+         */
         channel.basicConsume(QUEUE_NAME,false,deliverCallback,consumerTag->{});
     }
 
