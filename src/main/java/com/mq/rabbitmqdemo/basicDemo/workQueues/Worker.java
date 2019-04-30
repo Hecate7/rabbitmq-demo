@@ -1,6 +1,6 @@
-package com.mq.rabbitmqdemo.workQueues;
+package com.mq.rabbitmqdemo.basicDemo.workQueues;
 
-import com.mq.rabbitmqdemo.helloWorld.Send;
+import com.mq.rabbitmqdemo.basicDemo.helloWorld.Send;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;

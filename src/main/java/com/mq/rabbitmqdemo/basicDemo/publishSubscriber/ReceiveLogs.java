@@ -1,4 +1,4 @@
-package com.mq.rabbitmqdemo.publishSubscriber;
+package com.mq.rabbitmqdemo.basicDemo.publishSubscriber;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -21,9 +21,20 @@ public class ReceiveLogs {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        channel.exchangeDeclare(EXCHANGE_NAME,"fanout");
+        /*channel.exchangeDeclare(EXCHANGE_NAME,"fanout");
         String queueName = channel.queueDeclare().getQueue();
-        channel.queueBind(queueName,EXCHANGE_NAME,"");
+        channel.queueBind(queueName,EXCHANGE_NAME,"");*/
+
+        channel.exchangeDeclare(EXCHANGE_NAME,"direct");
+        String queueName = channel.queueDeclare().getQueue();
+        /**
+         * queueBind(String var1, String var2, String var3)
+         * var1:queueName
+         * var2:exchangeName
+         * var3:binding key
+         */
+        channel.queueBind(queueName,EXCHANGE_NAME,"orange");
+        channel.queueBind(queueName,EXCHANGE_NAME,"yellow");
 
         logger.info("[*] waiting for message!");
 

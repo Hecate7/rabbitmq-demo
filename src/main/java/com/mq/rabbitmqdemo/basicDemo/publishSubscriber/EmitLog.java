@@ -1,8 +1,6 @@
-package com.mq.rabbitmqdemo.publishSubscriber;
+package com.mq.rabbitmqdemo.basicDemo.publishSubscriber;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -28,8 +26,18 @@ public class EmitLog {
              * var1:exchangeName
              * var2:exchangeType [direct,topic,fanout,headers]
              */
-            channel.exchangeDeclare(EXCHANGE_NAME,"fanout");
-            channel.basicPublish(EXCHANGE_NAME,"",null,logs.getBytes("UTF-8"));
+            /*channel.exchangeDeclare(EXCHANGE_NAME,"fanout");
+            channel.basicPublish(EXCHANGE_NAME,"",null,logs.getBytes("UTF-8"));*/
+
+            channel.exchangeDeclare(EXCHANGE_NAME,"direct");
+            /**
+             * basicPublish(String var1, String var2, BasicProperties var3, byte[] var4)
+             * var1:exchangeName
+             * var2:binding key
+             * var3:properties
+             * var4:message
+             */
+            channel.basicPublish(EXCHANGE_NAME,"orange",MessageProperties.PERSISTENT_TEXT_PLAIN,logs.getBytes("UTF-8"));
 
             logger.info("[X] Send message: {}",logs);
         } catch (IOException e) {
